@@ -1,0 +1,1 @@
+C:\Users\Wouter\source\repos\CharacterSheet\CharacterSheet.Platform.UWP\CharacterSheet.Platform.UWP.csproj;x86
