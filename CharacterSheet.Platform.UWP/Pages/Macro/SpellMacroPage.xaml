@@ -120,6 +120,10 @@
 				Grid.ColumnSpan="2" />
 
 		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
+				   MaxWidth="800"
+				   MaxLines="10"
+				   IsTextSelectionEnabled="True"
+				   TextWrapping="WrapWholeWords"
 				 Grid.Row="8"
 				 Grid.Column="0"
 				 Grid.ColumnSpan="2" />
