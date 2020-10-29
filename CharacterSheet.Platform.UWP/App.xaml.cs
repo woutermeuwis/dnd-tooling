@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharacterSheet.Core;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -17,6 +18,7 @@ namespace CharacterSheet.Platform.UWP
         {
             InitializeComponent();
             Suspending += OnSuspending;
+            Core.Autofac.Setup();
         }
 
         /// <summary>

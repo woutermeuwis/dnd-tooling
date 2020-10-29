@@ -119,7 +119,7 @@
 				Grid.Column="0"
 				Grid.ColumnSpan="2" />
 
-		<TextBlock Text="{x:Bind ViewModel.Macro}"
+		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
 				 Grid.Row="8"
 				 Grid.Column="0"
 				 Grid.ColumnSpan="2" />

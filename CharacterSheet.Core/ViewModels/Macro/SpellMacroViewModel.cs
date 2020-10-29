@@ -1,13 +1,15 @@
 ﻿using CharacterSheet.Core.Helpers;
+using CharacterSheet.Core.Models;
+using CharacterSheet.Core.Services.Interface;
 using CharacterSheet.Core.ViewModels.Base;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CharacterSheet.Core.ViewModels.Macro
 {
     public class SpellMacroViewModel : BaseViewModel
     {
+        private readonly ISpellMacroService _spellMacroService;
+
         public string SpellName { get; set; }
         public string School { get; set; }
         public string Components { get; set; }
@@ -20,23 +22,28 @@ namespace CharacterSheet.Core.ViewModels.Macro
 
         public ICommand GenerateMacroCommand { get; }
 
-        public SpellMacroViewModel()
+        public SpellMacroViewModel(ISpellMacroService spellMacroService)
         {
+            _spellMacroService = spellMacroService;
+
             GenerateMacroCommand = new RelayCommand(GenerateMacro);
         }
 
         private void GenerateMacro()
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(SpellName)
-                .AppendLine(School)
-                .AppendLine(Components)
-                .AppendLine(CastingTime)
-                .AppendLine(Range)
-                .AppendLine(Duration)
-                .AppendLine(SavingThrow);
+            var spell = new Spell
+            {
+                SpellName = SpellName,
+                School = School,
+                Components = Components,
+                CastingTime = CastingTime,
+                Range = Range,
+                Duration = Duration,
+                SavingThrow = SavingThrow
+            };
 
-            Macro = sb.ToString();
+            Macro = _spellMacroService.GenerateMacroFromSpell(spell);
+            OnPropertyChanged(nameof(Macro));
         }
 
     }

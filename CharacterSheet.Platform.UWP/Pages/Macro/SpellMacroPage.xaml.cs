@@ -10,7 +10,7 @@ namespace CharacterSheet.Platform.UWP.Pages.Macro
         public SpellMacroPage()
         {
             InitializeComponent();
-            ViewModel = new SpellMacroViewModel();
+            ViewModel = Core.Autofac.Resolve<SpellMacroViewModel>();
         }
     }
 }
