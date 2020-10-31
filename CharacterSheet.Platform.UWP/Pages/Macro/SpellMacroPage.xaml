@@ -23,8 +23,15 @@
 						Value="Left" />
 				<Setter Property="VerticalAlignment"
 						Value="Center" />
-				<Setter Property="MinWidth"
+				<Setter Property="Width"
 						Value="300" />
+			</Style>
+
+			<Style TargetType="ComboBox">
+				<Setter Property="HorizontalAlignment"
+						Value="Left" />
+				<Setter Property="VerticalAlignment"
+						Value="Center" />
 			</Style>
 
 		</ResourceDictionary>
@@ -90,10 +97,25 @@
 				   Grid.Row="4"
 				   Grid.Column="0" />
 
-		<TextBox PlaceholderText="Range"
-				 Text="{x:Bind ViewModel.Range, Mode=TwoWay}"
-				 Grid.Row="4"
-				 Grid.Column="1" />
+		<StackPanel Orientation="Horizontal"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					Spacing="10"
+					Grid.Row="4"
+					Grid.Column="1">
+
+			<ComboBox x:Name="RangePicker"
+					  PlaceholderText="Select a Range"
+					  ItemsSource="{x:Bind ViewModel.PossibleRanges, Mode=OneWay}"
+					  SelectedItem="{x:Bind ViewModel.Range, Mode=TwoWay}"
+					  Width="150" />
+
+			<TextBox PlaceholderText="Custom Range"
+					 Text="{x:Bind ViewModel.CustomRange, Mode=TwoWay}"
+					 Visibility="{x:Bind ViewModel.ShouldShowCustomRange, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Width="140" />
+
+		</StackPanel>
 
 		<TextBlock Text="Duration"
 				   Grid.Row="5"
@@ -124,9 +146,9 @@
 				   MaxLines="10"
 				   IsTextSelectionEnabled="True"
 				   TextWrapping="WrapWholeWords"
-				 Grid.Row="8"
-				 Grid.Column="0"
-				 Grid.ColumnSpan="2" />
+				   Grid.Row="8"
+				   Grid.Column="0"
+				   Grid.ColumnSpan="2" />
 
 	</Grid>
 </Page>

@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 using CharacterSheet.Core.ViewModels.Macro;
+using System.Threading.Tasks;
 
 namespace CharacterSheet.Platform.UWP.Pages.Macro
 {
@@ -11,6 +12,7 @@ namespace CharacterSheet.Platform.UWP.Pages.Macro
         {
             InitializeComponent();
             ViewModel = Core.Autofac.Resolve<SpellMacroViewModel>();
-        }
+            ViewModel.Prepare();
+        }      
     }
 }

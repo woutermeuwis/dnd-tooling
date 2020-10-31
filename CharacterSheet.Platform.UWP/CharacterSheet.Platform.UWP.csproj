@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Pages\Macro\MacroSelectionPage.xaml.cs">
       <DependentUpon>MacroSelectionPage.xaml</DependentUpon>
     </Compile>
@@ -163,6 +164,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Theming\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Theming\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
