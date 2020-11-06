@@ -278,6 +278,11 @@
 
 		<TextBox PlaceholderText="Notes"
 				 Text="{x:Bind ViewModel.Notes, Mode=TwoWay}"
+				 AcceptsReturn="True"
+				 TextWrapping="Wrap"
+				 ScrollViewer.VerticalScrollBarVisibility="Auto"
+				 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+				 MaxWidth="300"
 				 VerticalAlignment="Stretch"
 				 Margin="0,15"
 				 Grid.Row="10"
