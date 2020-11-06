@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="14f7801d-810d-40c6-acbf-266e93f4ed34"
-    Publisher="CN=Wouter"
-    Version="1.0.0.0" />
+    Name="20383WouterMeuwis.3.5EAssistant"
+    Publisher="CN=45103735-DF65-4EC8-9F67-DD5E2CD88924"
+    Version="0.1.1.0" />
 
-  <mp:PhoneIdentity PhoneProductId="14f7801d-810d-40c6-acbf-266e93f4ed34" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="06e6d841-a726-4535-8a60-9f3ab61b9445" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>CharacterSheet.Platform.UWP</DisplayName>
-    <PublisherDisplayName>Wouter</PublisherDisplayName>
+    <DisplayName>3.5E Assistant</DisplayName>
+    <PublisherDisplayName>Wouter Meuwis</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,13 +32,16 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="CharacterSheet.Platform.UWP.App">
       <uap:VisualElements
-        DisplayName="CharacterSheet.Platform.UWP"
+        DisplayName="Roll20-Assist"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="CharacterSheet.Platform.UWP"
+        Description="Tool to assist with Roll20 character sheets for D&amp;D 3.5e"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/>
+          <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
