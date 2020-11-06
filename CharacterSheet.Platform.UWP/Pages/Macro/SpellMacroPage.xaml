@@ -41,12 +41,17 @@
 		  ColumnSpacing="20">
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition />
+			<!-- Labels -->
+			<ColumnDefinition Width="100" />
+			<!-- Input -->
+			<ColumnDefinition Width="300" />
+			<!-- Separator -->
+			<ColumnDefinition Width="5" />
+			<!-- Result -->
+			<ColumnDefinition Width="400" />
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 			<!-- Name -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 			<!-- School -->
@@ -57,14 +62,23 @@
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 			<!-- Range -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Duration -->
-			<RowDefinition Height="150" />
-			<!-- Saving throw -->
+			<!-- Target -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Area -->
+			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Duration -->
+			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Saving throw -->
+			<RowDefinition Height="150" />
+			<!-- Spell Resistance-->
+			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Notes -->
+			<RowDefinition Height="200" />
 			<!-- Generate button -->
-			<RowDefinition />
+			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 		</Grid.RowDefinitions>
 
+		<!-- Spell Name -->
 		<TextBlock Text="Spell Name"
 				   Grid.Row="0"
 				   Grid.Column="0" />
@@ -74,6 +88,7 @@
 				 Grid.Row="0"
 				 Grid.Column="1" />
 
+		<!-- School -->
 		<TextBlock Text="School"
 				   Grid.Row="1"
 				   Grid.Column="0" />
@@ -83,6 +98,7 @@
 				 Grid.Row="1"
 				 Grid.Column="1" />
 
+		<!-- Components -->
 		<TextBlock Text="Components"
 				   Grid.Row="2"
 				   Grid.Column="0" />
@@ -92,6 +108,7 @@
 				 Grid.Row="2"
 				 Grid.Column="1" />
 
+		<!-- Casting Time-->
 		<TextBlock Text="Casting Time"
 				   Grid.Row="3"
 				   Grid.Column="0" />
@@ -101,6 +118,7 @@
 				 Grid.Row="3"
 				 Grid.Column="1" />
 
+		<!-- Range -->
 		<TextBlock Text="Range"
 				   Grid.Row="4"
 				   Grid.Column="0" />
@@ -125,41 +143,66 @@
 
 		</StackPanel>
 
-		<TextBlock Text="Duration"
+		<!-- Target -->
+		<TextBlock Text="Target"
 				   Grid.Row="5"
+				   Grid.Column="0" />
+
+		<TextBox PlaceholderText="Target"
+				 Text="{x:Bind ViewModel.Target, Mode=TwoWay}"
+				 Grid.Row="5"
+				 Grid.Column="1" />
+
+		<!-- Area -->
+		<TextBlock Text="Area"
+				   Grid.Row="6"
+				   Grid.Column="0" />
+
+		<TextBox PlaceholderText="Area"
+				 Text="{x:Bind ViewModel.Area, Mode=TwoWay}"
+				 Grid.Row="6"
+				 Grid.Column="1" />
+
+		<!-- Duration-->
+		<TextBlock Text="Duration"
+				   Grid.Row="7"
 				   Grid.Column="0" />
 
 		<TextBox PlaceholderText="Duration"
 				 Text="{x:Bind ViewModel.Duration, Mode=TwoWay}"
-				 Grid.Row="5"
+				 Grid.Row="7"
 				 Grid.Column="1" />
 
+		<!-- Saving Throw -->
 		<TextBlock Text="Saving Throw"
-				   Grid.Row="6"
+				   VerticalAlignment="Top"
+				   Margin="0,15"
+				   Grid.Row="8"
 				   Grid.Column="0" />
 
-		<Grid Grid.Row="6"
+		<Grid Grid.Row="8"
 			  Grid.Column="1"
 			  HorizontalAlignment="Left"
 			  VerticalAlignment="Center"
 			  ColumnSpacing="10">
 
 			<Grid.RowDefinitions>
-				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 				<!-- Fortitude -->
 				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 				<!-- Reflex -->
 				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 				<!-- Will -->
+				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 			</Grid.RowDefinitions>
 
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="70" />
 				<!-- type -->
-				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="70" />
 				<!-- kind -->
-				<ColumnDefinition Width="90" />
+				<ColumnDefinition Width="120" />
 				<!-- include -->
+				<ColumnDefinition Width="90" />
+
 			</Grid.ColumnDefinitions>
 
 			<TextBlock Text="Fortitude"
@@ -177,7 +220,7 @@
 					 Visibility="{x:Bind ViewModel.ShouldShowCustomFortitudeSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
 					 Width="90"
 					 Grid.Row="0"
-					 Grid.Column="2"/>
+					 Grid.Column="2" />
 
 			<TextBlock Text="Reflex"
 					   Grid.Row="1"
@@ -215,20 +258,55 @@
 
 		</Grid>
 
+		<!-- Spell Resistance -->
+		<TextBlock Text="Spell Resistance"
+				   Grid.Row="9"
+				   Grid.Column="0" />
+
+		<ComboBox Grid.Row="9"
+				  Grid.Column="1"
+				  Width="300"
+				  ItemsSource="{x:Bind ViewModel.PossibleResistances, Mode=OneWay}"
+				  SelectedItem="{x:Bind ViewModel.SpellResistance, Mode=TwoWay}" />
+
+		<!-- Notes -->
+		<TextBlock Text="Notes"
+				   VerticalAlignment="Top"
+				   Margin="0,15,0,0"
+				   Grid.Row="10"
+				   Grid.Column="0" />
+
+		<TextBox PlaceholderText="Notes"
+				 Text="{x:Bind ViewModel.Notes, Mode=TwoWay}"
+				 VerticalAlignment="Stretch"
+				 Margin="0,15"
+				 Grid.Row="10"
+				 Grid.Column="1" />
+
+		<!-- Generate button -->
 		<Button Content="Generate"
 				Command="{x:Bind ViewModel.GenerateMacroCommand}"
-				Grid.Row="7"
+				HorizontalAlignment="Center"
+				Width="200"
+				Grid.Row="11"
 				Grid.Column="0"
 				Grid.ColumnSpan="2" />
+		
+		<!-- Separator -->
+		<Border Background="DarkGray"
+				Grid.Row="0"
+				Grid.RowSpan="12"
+				Grid.Column="2" />
 
+		<!-- Macro -->
 		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
 				   MaxWidth="800"
-				   MaxLines="10"
+				   MaxLines="12"
 				   IsTextSelectionEnabled="True"
 				   TextWrapping="WrapWholeWords"
-				   Grid.Row="8"
-				   Grid.Column="0"
-				   Grid.ColumnSpan="2" />
+				   Grid.Row="0"
+				   Grid.RowSpan="12"
+				   Grid.Column="3" />
 
 	</Grid>
 </Page>

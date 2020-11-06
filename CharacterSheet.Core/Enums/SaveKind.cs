@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CharacterSheet.Core.Enums
+﻿namespace CharacterSheet.Core.Enums
 {
     public enum SaveKind
     {
+        None,
         Negates,
         Half,
         Partial,
-        Custom,
-        None
+        Custom
     }
 }
