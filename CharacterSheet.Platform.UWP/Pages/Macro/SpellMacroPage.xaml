@@ -47,13 +47,21 @@
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Name -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- School -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Components -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Casting Time -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Range -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Duration -->
+			<RowDefinition Height="150" />
+			<!-- Saving throw -->
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<!-- Generate button -->
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
@@ -130,10 +138,82 @@
 				   Grid.Row="6"
 				   Grid.Column="0" />
 
-		<TextBox PlaceholderText="Saving Throw"
-				 Text="{x:Bind ViewModel.SavingThrow, Mode=TwoWay}"
-				 Grid.Row="6"
-				 Grid.Column="1" />
+		<Grid Grid.Row="6"
+			  Grid.Column="1"
+			  HorizontalAlignment="Left"
+			  VerticalAlignment="Center"
+			  ColumnSpacing="10">
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+				<!-- Fortitude -->
+				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+				<!-- Reflex -->
+				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+				<!-- Will -->
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="70" />
+				<!-- type -->
+				<ColumnDefinition Width="120" />
+				<!-- kind -->
+				<ColumnDefinition Width="90" />
+				<!-- include -->
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Text="Fortitude"
+					   Grid.Row="0"
+					   Grid.Column="0" />
+
+			<ComboBox Grid.Row="0"
+					  Grid.Column="1"
+					  HorizontalAlignment="Stretch"
+					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+					  SelectedItem="{x:Bind ViewModel.FortitudeSave, Mode=TwoWay}" />
+
+			<TextBox PlaceholderText="Custom"
+					 Text="{x:Bind ViewModel.CustomFortitudeSave, Mode=TwoWay}"
+					 Visibility="{x:Bind ViewModel.ShouldShowCustomFortitudeSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Width="90"
+					 Grid.Row="0"
+					 Grid.Column="2"/>
+
+			<TextBlock Text="Reflex"
+					   Grid.Row="1"
+					   Grid.Column="0" />
+
+			<ComboBox Grid.Row="1"
+					  Grid.Column="1"
+					  HorizontalAlignment="Stretch"
+					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+					  SelectedItem="{x:Bind ViewModel.ReflexSave, Mode=TwoWay}" />
+
+			<TextBox PlaceholderText="Custom"
+					 Text="{x:Bind ViewModel.CustomReflexSave, Mode=TwoWay}"
+					 Visibility="{x:Bind ViewModel.ShouldShowCustomReflexSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Width="90"
+					 Grid.Row="1"
+					 Grid.Column="2" />
+
+			<TextBlock Text="Will"
+					   Grid.Row="2"
+					   Grid.Column="0" />
+
+			<ComboBox Grid.Row="2"
+					  Grid.Column="1"
+					  HorizontalAlignment="Stretch"
+					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+					  SelectedItem="{x:Bind ViewModel.WillSave, Mode=TwoWay}" />
+
+			<TextBox PlaceholderText="Custom"
+					 Text="{x:Bind ViewModel.CustomWillSave, Mode=TwoWay}"
+					 Visibility="{x:Bind ViewModel.ShouldShowCustomWillSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Width="90"
+					 Grid.Row="2"
+					 Grid.Column="2" />
+
+		</Grid>
 
 		<Button Content="Generate"
 				Command="{x:Bind ViewModel.GenerateMacroCommand}"

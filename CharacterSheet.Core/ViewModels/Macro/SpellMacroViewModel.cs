@@ -18,6 +18,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
         private readonly ISpellMacroService _spellMacroService;
 
         public ObservableCollection<SpellRange> PossibleRanges { get; }
+        public ObservableCollection<SaveKind> PossibleSaveKinds { get; }
 
         public string SpellName { get; set; }
         public string School { get; set; }
@@ -26,11 +27,19 @@ namespace CharacterSheet.Core.ViewModels.Macro
         public SpellRange Range { get; set; }
         public string CustomRange { get; set; }
         public string Duration { get; set; }
-        public string SavingThrow { get; set; }
+        public SaveKind FortitudeSave { get; set; }
+        public string CustomFortitudeSave { get; set; }
+        public SaveKind ReflexSave { get; set; }
+        public string CustomReflexSave { get; set; }
+        public SaveKind WillSave { get; set; }
+        public string CustomWillSave { get; set; }
 
         public string Macro { get; set; }
 
         public bool ShouldShowCustomRange => Range == SpellRange.Custom;
+        public bool ShouldShowCustomFortitudeSave => FortitudeSave == SaveKind.Custom;
+        public bool ShouldShowCustomReflexSave => ReflexSave == SaveKind.Custom;
+        public bool ShouldShowCustomWillSave => WillSave == SaveKind.Custom;
 
         public ICommand GenerateMacroCommand { get; }
 
@@ -39,6 +48,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
             _spellMacroService = spellMacroService;
 
             PossibleRanges = new ObservableCollection<SpellRange>();
+            PossibleSaveKinds = new ObservableCollection<SaveKind>();
 
             GenerateMacroCommand = new RelayCommand(GenerateMacro);
         }
@@ -47,8 +57,11 @@ namespace CharacterSheet.Core.ViewModels.Macro
         {
             base.Prepare();
 
-            var ranges = Enum.GetValues(typeof(SpellRange)).Cast<SpellRange>().ToList();
+            var ranges = Enum.GetValues(typeof(SpellRange)).Cast<SpellRange>();
             PossibleRanges.Update(ranges);
+
+            var saveKinds = Enum.GetValues(typeof(SaveKind)).Cast<SaveKind>();
+            PossibleSaveKinds.Update(saveKinds);
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -69,7 +82,6 @@ namespace CharacterSheet.Core.ViewModels.Macro
                 CastingTime = CastingTime,
                 Range = range,
                 Duration = Duration,
-                SavingThrow = SavingThrow
             };
 
             Macro = _spellMacroService.GenerateMacroFromSpell(spell);
