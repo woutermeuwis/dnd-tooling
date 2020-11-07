@@ -9,7 +9,7 @@
   <Identity
     Name="20383WouterMeuwis.3.5EAssistant"
     Publisher="CN=45103735-DF65-4EC8-9F67-DD5E2CD88924"
-    Version="0.1.2.0" />
+    Version="0.1.6.0" />
 
   <mp:PhoneIdentity PhoneProductId="06e6d841-a726-4535-8a60-9f3ab61b9445" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
