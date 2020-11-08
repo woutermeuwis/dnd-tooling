@@ -11,7 +11,7 @@ namespace CharacterSheet.Platform.UWP
         public MainPage()
         {
             InitializeComponent();
-            ViewModel = Core.Autofac.Resolve<MainViewModel>();
+            ViewModel = Autofac.Resolve<MainViewModel>();
         }
 
         private void GoToMacroGenerator(object sender, Windows.UI.Xaml.RoutedEventArgs e)

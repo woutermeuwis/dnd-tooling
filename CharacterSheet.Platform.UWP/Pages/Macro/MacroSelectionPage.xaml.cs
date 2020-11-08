@@ -10,7 +10,7 @@ namespace CharacterSheet.Platform.UWP.Pages.Macro
         public MacroSelectionPage() : base()
         {
             InitializeComponent();
-            ViewModel = Core.Autofac.Resolve<MacroSelectionViewModel>();
+            ViewModel = Autofac.Resolve<MacroSelectionViewModel>();
         }
 
         private void GoToSpellMacroGenerator(object sender, Windows.UI.Xaml.RoutedEventArgs e)

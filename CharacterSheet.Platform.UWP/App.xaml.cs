@@ -10,6 +10,7 @@ namespace CharacterSheet.Platform.UWP
 {
     sealed partial class App : Application
     {
+        private readonly Core.BaseAutofac _autofacContainer;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -18,7 +19,9 @@ namespace CharacterSheet.Platform.UWP
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            Core.Autofac.Setup();
+
+            _autofacContainer = new Core.BaseAutofac();
+            _autofacContainer.Setup();
         }
 
         /// <summary>

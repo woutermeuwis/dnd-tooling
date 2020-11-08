@@ -6,11 +6,11 @@ using CharacterSheet.Core.ViewModels.Macro;
 
 namespace CharacterSheet.Core
 {
-    public static class Autofac
+    public abstract class BaseAutofac
     {
         private static IContainer _container;
 
-        public static void Setup()
+        public void Setup()
         {
             var builder = new ContainerBuilder();
             RegisterTypes(builder);
@@ -19,8 +19,10 @@ namespace CharacterSheet.Core
 
         public static T Resolve<T>() => _container.Resolve<T>();
 
-        private static void RegisterTypes(ContainerBuilder builder)
+        private void RegisterTypes(ContainerBuilder builder)
         {
+            RegisterPlatformTypes(builder);
+
             // ViewModels
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<MacroSelectionViewModel>().AsSelf();
@@ -29,5 +31,7 @@ namespace CharacterSheet.Core
             // Service
             builder.RegisterType<SpellMacroService>().As<ISpellMacroService>();
         }
+
+        protected abstract void RegisterPlatformTypes(ContainerBuilder builder);
     }
 }

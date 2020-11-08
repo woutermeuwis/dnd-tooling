@@ -11,7 +11,7 @@ namespace CharacterSheet.Platform.UWP.Pages.Macro
         public SpellMacroPage()
         {
             InitializeComponent();
-            ViewModel = Core.Autofac.Resolve<SpellMacroViewModel>();
+            ViewModel = Autofac.Resolve<SpellMacroViewModel>();
             ViewModel.Prepare();
         }      
     }
