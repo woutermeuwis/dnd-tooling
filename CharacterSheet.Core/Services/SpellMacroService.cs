@@ -1,14 +1,43 @@
 ﻿using CharacterSheet.Core.Enums;
 using CharacterSheet.Core.Extensions;
+using CharacterSheet.Core.Interfaces;
 using CharacterSheet.Core.Models;
 using CharacterSheet.Core.Services.Interface;
-using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CharacterSheet.Core.Services
 {
     public class SpellMacroService : ISpellMacroService
     {
+        private readonly IStorageService _storage;
+
+        private readonly List<Spell> _spells;
+        private bool _initialized;
+
+        public SpellMacroService(IStorageService storageService)
+        {
+            _storage = storageService;
+            _spells = new List<Spell>();
+        }
+        
+        public async Task Initialize()
+        {
+            if (!_initialized)
+            {
+                await Load().ConfigureAwait(false);
+                _initialized = true;
+            }
+        }
+
+        public async Task<List<Spell>> GetSpells()
+        {
+            await Initialize().ConfigureAwait(false);
+            return _spells;
+        }
+
         public string GenerateMacroFromSpell(Spell spell)
         {
             if (spell == null)
@@ -109,6 +138,24 @@ namespace CharacterSheet.Core.Services
             return sb.ToString();
         }
 
+
+        #region private helpers
+
+        private async Task Load()
+        {
+            var spellsJson = await _storage.Fetchdata(Constants.Files.Spells).ConfigureAwait(false);
+            var spells = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Spell>>(spellsJson);
+            _spells.Update(spells);
+        }
+
+        private async Task Save()
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(_spells);
+            await _storage.StoreData(Constants.Files.Spells, json);
+        }
+
         private string WrapTag(string name, string value) => $" {{{{{name}={value}}}}}";
+
+        #endregion
     }
 }
