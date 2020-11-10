@@ -20,7 +20,7 @@ namespace CharacterSheet.Platform.UWP
             InitializeComponent();
             Suspending += OnSuspending;
 
-            _autofacContainer = new Core.BaseAutofac();
+            _autofacContainer = new Autofac();
             _autofacContainer.Setup();
         }
 

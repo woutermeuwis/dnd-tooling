@@ -7,6 +7,7 @@ using CharacterSheet.Core.ViewModels.Base;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CharacterSheet.Core.ViewModels.Macro
@@ -15,27 +16,118 @@ namespace CharacterSheet.Core.ViewModels.Macro
     {
         private readonly ISpellMacroService _spellMacroService;
 
+        public ObservableCollection<Spell> Spells { get; }
+        public Spell SelectedSpell { get; set; }
+
         public ObservableCollection<SpellRange> PossibleRanges { get; }
         public ObservableCollection<SaveKind> PossibleSaveKinds { get; }
         public ObservableCollection<SpellResistance> PossibleResistances { get; }
 
-        public string SpellName { get; set; }
-        public string School { get; set; }
-        public string Components { get; set; }
-        public string CastingTime { get; set; }
-        public SpellRange Range { get; set; }
-        public string CustomRange { get; set; }
-        public string Target { get; set; }
-        public string Area { get; set; }
-        public string Duration { get; set; }
-        public SaveKind FortitudeSave { get; set; }
-        public string CustomFortitudeSave { get; set; }
-        public SaveKind ReflexSave { get; set; }
-        public string CustomReflexSave { get; set; }
-        public SaveKind WillSave { get; set; }
-        public string CustomWillSave { get; set; }
-        public SpellResistance SpellResistance { get; set; }
-        public string Notes { get; set; }
+        #region Spell Properties
+
+        public string SpellName
+        {
+            get => SelectedSpell?.SpellName;
+            set => SelectedSpell.SpellName = value;
+        }
+
+        public string School
+        {
+            get => SelectedSpell?.School;
+            set => SelectedSpell.School = value;
+        }
+
+        public string Components
+        {
+            get => SelectedSpell?.Components;
+            set => SelectedSpell.Components = value;
+        }
+
+        public string CastingTime
+        {
+            get => SelectedSpell?.CastingTime;
+            set => SelectedSpell.CastingTime = value;
+        }
+
+        public SpellRange Range
+        {
+            get => SelectedSpell?.Range ?? SpellRange.Unknown;
+            set => SelectedSpell.Range = value;
+        }
+
+        public string CustomRange
+        {
+            get => SelectedSpell?.CustomRange;
+            set => SelectedSpell.CustomRange = value;
+        }
+
+        public string Target
+        {
+            get => SelectedSpell?.Target;
+            set => SelectedSpell.Target = value;
+        }
+
+        public string Area
+        {
+            get => SelectedSpell?.Area;
+            set => SelectedSpell.Area = value;
+        }
+
+        public string Duration
+        {
+            get => SelectedSpell?.Duration;
+            set => SelectedSpell.Duration = value;
+        }
+
+        public SaveKind FortitudeSave
+        {
+            get => SelectedSpell?.FortitudeSave ?? SaveKind.None;
+            set => SelectedSpell.FortitudeSave = value;
+        }
+
+        public string CustomFortitudeSave
+        {
+            get => SelectedSpell?.CustomFortitudeSave;
+            set => SelectedSpell.CustomFortitudeSave = value;
+        }
+
+        public SaveKind ReflexSave
+        {
+            get => SelectedSpell?.ReflexSave ?? SaveKind.None;
+            set => SelectedSpell.ReflexSave = value;
+        }
+
+        public string CustomReflexSave
+        {
+            get => SelectedSpell?.CustomReflexSave;
+            set => SelectedSpell.CustomReflexSave = value;
+        }
+
+        public SaveKind WillSave
+        {
+            get => SelectedSpell?.WillSave ?? SaveKind.None;
+            set => SelectedSpell.WillSave = value;
+        }
+
+        public string CustomWillSave
+        {
+            get => SelectedSpell?.CustomWillSave;
+            set => SelectedSpell.CustomWillSave = value;
+        }
+
+        public SpellResistance SpellResistance
+        {
+            get => SelectedSpell?.SpellResistance ?? SpellResistance.No;
+            set => SelectedSpell.SpellResistance = value;
+        }
+
+        public string Notes
+        {
+            get => SelectedSpell?.Notes;
+            set => SelectedSpell.Notes = value;
+        }
+
+        #endregion
 
         public string Macro { get; set; }
 
@@ -45,16 +137,19 @@ namespace CharacterSheet.Core.ViewModels.Macro
         public bool ShouldShowCustomWillSave => WillSave == SaveKind.Custom;
 
         public ICommand GenerateMacroCommand { get; }
+        public ICommand SaveCommand { get; }
 
         public SpellMacroViewModel(ISpellMacroService spellMacroService)
         {
             _spellMacroService = spellMacroService;
 
+            Spells = new ObservableCollection<Spell>();
             PossibleRanges = new ObservableCollection<SpellRange>();
             PossibleSaveKinds = new ObservableCollection<SaveKind>();
             PossibleResistances = new ObservableCollection<SpellResistance>();
 
             GenerateMacroCommand = new RelayCommand(GenerateMacro);
+            SaveCommand = new AsyncRelayCommand(SaveSelectedSpell);
         }
 
         public override void Prepare()
@@ -71,31 +166,29 @@ namespace CharacterSheet.Core.ViewModels.Macro
             PossibleResistances.Update(resistances);
         }
 
+        public override async Task Initialize()
+        {
+            await base.Initialize();
+            await ReloadSpells();
+        }
+
         private void GenerateMacro()
         {
-            var spell = new Spell
-            {
-                SpellName = SpellName,
-                School = School,
-                Components = Components,
-                CastingTime = CastingTime,
-                Range = Range,
-                CustomRange = CustomRange,
-                Target = Target,
-                Area = Area,
-                Duration = Duration,
-                FortitudeSave = FortitudeSave,
-                CustomFortitudeSave = CustomFortitudeSave,
-                ReflexSave = ReflexSave,
-                CustomReflexSave = CustomReflexSave,
-                WillSave = WillSave,
-                CustomWillSave = CustomWillSave,
-                SpellResistance = SpellResistance,
-                Notes = Notes
-            };
-
-            Macro = _spellMacroService.GenerateMacroFromSpell(spell);
+            Macro = _spellMacroService.GenerateMacroFromSpell(SelectedSpell);
             OnPropertyChanged(nameof(Macro));
+        }
+
+        private async Task SaveSelectedSpell()
+        {
+            await _spellMacroService.SaveSpell(SelectedSpell);
+            await ReloadSpells();
+        }
+
+        private async Task ReloadSpells()
+        {
+            var spells = await _spellMacroService.GetSpells();
+            Spells.Update(spells);
+            SelectedSpell = Spells.FirstOrDefault() ?? new Spell();
         }
     }
 }

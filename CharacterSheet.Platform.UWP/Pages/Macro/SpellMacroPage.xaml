@@ -3,6 +3,7 @@
 	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:models="using:CharacterSheet.Core.Models"
 	  mc:Ignorable="d"
 	  Background="{ThemeResource DefaultBackgroundColor}">
 
@@ -41,6 +42,8 @@
 		  ColumnSpacing="20">
 
 		<Grid.ColumnDefinitions>
+			<!-- Spell List -->
+			<ColumnDefinition Width="300" />
 			<!-- Labels -->
 			<ColumnDefinition Width="100" />
 			<!-- Input -->
@@ -78,57 +81,71 @@
 			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
 		</Grid.RowDefinitions>
 
+		<!-- Spell List -->
+		<ListView Grid.Row="0"
+				  Grid.RowSpan="12"
+				  ItemsSource="{x:Bind ViewModel.Spells, Mode=OneWay}"
+				  SelectedItem="{x:Bind ViewModel.SelectedSpell, Mode=TwoWay}">
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="models:Spell">
+					<TextBlock Text="{x:Bind SpellName, Mode=OneWay, FallbackValue='Unnamed spell'}"
+							   HorizontalAlignment="Stretch" />
+				</DataTemplate>
+			</ListView.ItemTemplate>
+
+		</ListView>
+
 		<!-- Spell Name -->
 		<TextBlock Text="Spell Name"
 				   Grid.Row="0"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Spell Name"
 				 Text="{x:Bind ViewModel.SpellName, Mode=TwoWay}"
 				 Grid.Row="0"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- School -->
 		<TextBlock Text="School"
 				   Grid.Row="1"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="School"
 				 Text="{x:Bind ViewModel.School, Mode=TwoWay}"
 				 Grid.Row="1"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Components -->
 		<TextBlock Text="Components"
 				   Grid.Row="2"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Components"
 				 Text="{x:Bind ViewModel.Components, Mode=TwoWay}"
 				 Grid.Row="2"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Casting Time-->
 		<TextBlock Text="Casting Time"
 				   Grid.Row="3"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Casting Time"
 				 Text="{x:Bind ViewModel.CastingTime, Mode=TwoWay}"
 				 Grid.Row="3"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Range -->
 		<TextBlock Text="Range"
 				   Grid.Row="4"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<StackPanel Orientation="Horizontal"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Center"
 					Spacing="10"
 					Grid.Row="4"
-					Grid.Column="1">
+					Grid.Column="2">
 
 			<ComboBox x:Name="RangePicker"
 					  PlaceholderText="Select a Range"
@@ -146,42 +163,42 @@
 		<!-- Target -->
 		<TextBlock Text="Target"
 				   Grid.Row="5"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Target"
 				 Text="{x:Bind ViewModel.Target, Mode=TwoWay}"
 				 Grid.Row="5"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Area -->
 		<TextBlock Text="Area"
 				   Grid.Row="6"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Area"
 				 Text="{x:Bind ViewModel.Area, Mode=TwoWay}"
 				 Grid.Row="6"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Duration-->
 		<TextBlock Text="Duration"
 				   Grid.Row="7"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Duration"
 				 Text="{x:Bind ViewModel.Duration, Mode=TwoWay}"
 				 Grid.Row="7"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Saving Throw -->
 		<TextBlock Text="Saving Throw"
 				   VerticalAlignment="Top"
 				   Margin="0,15"
 				   Grid.Row="8"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<Grid Grid.Row="8"
-			  Grid.Column="1"
+			  Grid.Column="2"
 			  HorizontalAlignment="Left"
 			  VerticalAlignment="Center"
 			  ColumnSpacing="10">
@@ -197,15 +214,15 @@
 
 			<Grid.ColumnDefinitions>
 				<!-- type -->
-				<ColumnDefinition Width="70" />
+				<ColumnDefinition Width="30" />
 				<!-- kind -->
-				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="100" />
 				<!-- include -->
-				<ColumnDefinition Width="90" />
+				<ColumnDefinition Width="150" />
 
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Text="Fortitude"
+			<TextBlock Text="Fort"
 					   Grid.Row="0"
 					   Grid.Column="0" />
 
@@ -218,11 +235,11 @@
 			<TextBox PlaceholderText="Custom"
 					 Text="{x:Bind ViewModel.CustomFortitudeSave, Mode=TwoWay}"
 					 Visibility="{x:Bind ViewModel.ShouldShowCustomFortitudeSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="90"
+					 Width="150"
 					 Grid.Row="0"
 					 Grid.Column="2" />
 
-			<TextBlock Text="Reflex"
+			<TextBlock Text="Refl"
 					   Grid.Row="1"
 					   Grid.Column="0" />
 
@@ -235,7 +252,7 @@
 			<TextBox PlaceholderText="Custom"
 					 Text="{x:Bind ViewModel.CustomReflexSave, Mode=TwoWay}"
 					 Visibility="{x:Bind ViewModel.ShouldShowCustomReflexSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="90"
+					 Width="150"
 					 Grid.Row="1"
 					 Grid.Column="2" />
 
@@ -252,7 +269,7 @@
 			<TextBox PlaceholderText="Custom"
 					 Text="{x:Bind ViewModel.CustomWillSave, Mode=TwoWay}"
 					 Visibility="{x:Bind ViewModel.ShouldShowCustomWillSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="90"
+					 Width="150"
 					 Grid.Row="2"
 					 Grid.Column="2" />
 
@@ -261,10 +278,10 @@
 		<!-- Spell Resistance -->
 		<TextBlock Text="Spell Resistance"
 				   Grid.Row="9"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<ComboBox Grid.Row="9"
-				  Grid.Column="1"
+				  Grid.Column="2"
 				  Width="300"
 				  ItemsSource="{x:Bind ViewModel.PossibleResistances, Mode=OneWay}"
 				  SelectedItem="{x:Bind ViewModel.SpellResistance, Mode=TwoWay}" />
@@ -274,7 +291,7 @@
 				   VerticalAlignment="Top"
 				   Margin="0,15,0,0"
 				   Grid.Row="10"
-				   Grid.Column="0" />
+				   Grid.Column="1" />
 
 		<TextBox PlaceholderText="Notes"
 				 Text="{x:Bind ViewModel.Notes, Mode=TwoWay}"
@@ -286,22 +303,29 @@
 				 VerticalAlignment="Stretch"
 				 Margin="0,15"
 				 Grid.Row="10"
-				 Grid.Column="1" />
+				 Grid.Column="2" />
 
 		<!-- Generate button -->
 		<Button Content="Generate"
 				Command="{x:Bind ViewModel.GenerateMacroCommand}"
-				HorizontalAlignment="Center"
-				Width="200"
+				HorizontalAlignment="Left"
+				Width="145"
 				Grid.Row="11"
-				Grid.Column="0"
-				Grid.ColumnSpan="2" />
+				Grid.Column="2" />
 		
+		<!-- Save button -->
+		<Button Content="Save"
+				Command="{x:Bind ViewModel.SaveCommand}"
+				HorizontalAlignment="Right"
+				Width="145"
+				Grid.Row="11"
+				Grid.Column="2" />
+
 		<!-- Separator -->
 		<Border Background="DarkGray"
 				Grid.Row="0"
 				Grid.RowSpan="12"
-				Grid.Column="2" />
+				Grid.Column="3" />
 
 		<!-- Macro -->
 		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
@@ -311,7 +335,7 @@
 				   TextWrapping="WrapWholeWords"
 				   Grid.Row="0"
 				   Grid.RowSpan="12"
-				   Grid.Column="3" />
+				   Grid.Column="4" />
 
 	</Grid>
 </Page>

@@ -45,7 +45,8 @@ namespace CharacterSheet.Core.ViewModels.Base
     {
         public virtual void Prepare(T param)
         {
-
+            // always execute parameterless prepare first
+            Prepare();
         }
     }
 }

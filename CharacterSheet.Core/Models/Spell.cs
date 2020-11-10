@@ -1,14 +1,14 @@
 ﻿using CharacterSheet.Core.Enums;
+using Newtonsoft.Json;
 using PropertyChanged;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CharacterSheet.Core.Models
 {
     [AddINotifyPropertyChangedInterface]
     public class Spell
     {
+        public Guid Id { get; set; }
         public string SpellName { get; set; }
         public string School { get; set; }
         public string Components { get; set; }
@@ -26,5 +26,34 @@ namespace CharacterSheet.Core.Models
         public string CustomWillSave { get; set; }
         public SpellResistance SpellResistance { get; set; }
         public string Notes { get; set; }
+
+        public Spell()
+        {
+            Id = new Guid();
+        }
+
+        [JsonConstructor]
+        public Spell(Guid id, string spellName, string school, string components, string castingTime, SpellRange range, string customRange, string target, string area, string duration,
+            SaveKind fortitudeSave, string customFortitudeSave, SaveKind reflexSave, string customReflexSave, SaveKind willSave, string customWillSave, SpellResistance spellResistance, string notes)
+        {
+            Id = id;
+            SpellName = spellName;
+            School = school;
+            Components = components;
+            CastingTime = castingTime;
+            Range = range;
+            CustomRange = customRange;
+            Target = target;
+            Area = area;
+            Duration = duration;
+            FortitudeSave = fortitudeSave;
+            CustomFortitudeSave = customFortitudeSave;
+            ReflexSave = reflexSave;
+            CustomReflexSave = customReflexSave;
+            WillSave = willSave;
+            CustomWillSave = customWillSave;
+            SpellResistance = spellResistance;
+            Notes = notes;
+        }
     }
 }

@@ -4,6 +4,7 @@ using CharacterSheet.Core.Interfaces;
 using CharacterSheet.Core.Models;
 using CharacterSheet.Core.Services.Interface;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,12 +23,23 @@ namespace CharacterSheet.Core.Services
             _storage = storageService;
             _spells = new List<Spell>();
         }
-        
+
         public async Task Initialize()
         {
             if (!_initialized)
             {
                 await Load().ConfigureAwait(false);
+
+                // TODO remove mock code
+                if (!_spells.Any())
+                {
+                    _spells.Add(new Spell { SpellName = "spell 1" });
+                    _spells.Add(new Spell { SpellName = "spell 2" });
+                    _spells.Add(new Spell { SpellName = "spell 3" });
+                    _spells.Add(new Spell { SpellName = "spell 4" });
+                    await Save();
+                }
+
                 _initialized = true;
             }
         }
@@ -35,7 +47,16 @@ namespace CharacterSheet.Core.Services
         public async Task<List<Spell>> GetSpells()
         {
             await Initialize().ConfigureAwait(false);
-            return _spells;
+            return _spells
+                .OrderBy(s => s.SpellName)
+                .ToList();
+        }
+
+        public async Task SaveSpell(Spell spell)
+        {
+            var existing = _spells.RemoveAll(s => s.Id == spell.Id);
+            _spells.Add(spell);
+            await Save().ConfigureAwait(false);
         }
 
         public string GenerateMacroFromSpell(Spell spell)
@@ -80,7 +101,7 @@ namespace CharacterSheet.Core.Services
                 var saveBuilder = new StringBuilder();
 
                 // fortitude
-                if (spell.FortitudeSave == SaveKind.Custom)
+                if (spell.FortitudeSave == SaveKind.Custom && spell.CustomFortitudeSave.IsNotNullOrEmptyOrWhitespace())
                     saveBuilder
                         .Append("Fortitude ")
                         .Append(spell.CustomFortitudeSave)
@@ -92,7 +113,7 @@ namespace CharacterSheet.Core.Services
                         .Append(";");
 
                 // reflex
-                if (spell.ReflexSave == SaveKind.Custom)
+                if (spell.ReflexSave == SaveKind.Custom && spell.CustomReflexSave.IsNotNullOrEmptyOrWhitespace())
                     saveBuilder
                         .Append("Reflex ")
                         .Append(spell.CustomReflexSave)
@@ -105,7 +126,7 @@ namespace CharacterSheet.Core.Services
 
 
                 // will
-                if (spell.WillSave == SaveKind.Custom)
+                if (spell.WillSave == SaveKind.Custom && spell.CustomWillSave.IsNotNullOrEmptyOrWhitespace())
                     saveBuilder
                         .Append("Will ")
                         .Append(spell.CustomWillSave)
@@ -144,8 +165,11 @@ namespace CharacterSheet.Core.Services
         private async Task Load()
         {
             var spellsJson = await _storage.Fetchdata(Constants.Files.Spells).ConfigureAwait(false);
-            var spells = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Spell>>(spellsJson);
-            _spells.Update(spells);
+            if (spellsJson.IsNotNullOrEmptyOrWhitespace())
+            {
+                var spells = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Spell>>(spellsJson);
+                _spells.Update(spells);
+            }
         }
 
         private async Task Save()
