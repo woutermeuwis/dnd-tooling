@@ -142,6 +142,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
 		public ICommand AddCommand { get; }
 		public ICommand ExportCommand { get; }
 		public ICommand ImportCommand { get; }
+		public ICommand DeleteCommand { get; }
 
 		public SpellMacroViewModel(ISpellMacroService spellMacroService)
 		{
@@ -157,6 +158,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
 			AddCommand = new RelayCommand(AddSpell);
 			ExportCommand = new AsyncRelayCommand(ExportSpells);
 			ImportCommand = new AsyncRelayCommand(ImportSpells);
+			DeleteCommand = new AsyncRelayCommand<Spell>(DeleteSpell);
 		}
 
 		public override void Prepare()
@@ -212,6 +214,16 @@ namespace CharacterSheet.Core.ViewModels.Macro
 			var spells = await _spellMacroService.GetSpells();
 			Spells.Update(spells);
 			SelectedSpell = Spells.FirstOrDefault() ?? new Spell();
+		}
+
+		private async Task DeleteSpell(Spell spell)
+		{
+			if (!Spells.Contains(spell))
+				return;
+
+			Spells.Remove(spell);
+			await SaveList();
+			SelectedSpell = Spells.FirstOrDefault();
 		}
 	}
 }

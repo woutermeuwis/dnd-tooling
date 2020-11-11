@@ -33,7 +33,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="300" />
 			<ColumnDefinition Width="450" />
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 
 		<!--#region Spell List -->
@@ -43,10 +43,22 @@
 				  Grid.Column="0"
 				  ItemsSource="{x:Bind ViewModel.Spells, Mode=OneWay}"
 				  SelectedItem="{x:Bind ViewModel.SelectedSpell, Mode=TwoWay}">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment"
+							Value="Stretch" />
+				</Style>
+			</ListView.ItemContainerStyle>
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="models:Spell">
-					<TextBlock Text="{x:Bind SpellName, Mode=OneWay, FallbackValue='Unnamed spell'}"
-							   HorizontalAlignment="Stretch" />
+					<Grid>
+						<TextBlock Text="{x:Bind SpellName, Mode=OneWay, FallbackValue='Unnamed spell'}" />
+						<Button HorizontalAlignment="Right"
+								VerticalAlignment="Center"
+								Click="DeleteSpell_Click">
+							<SymbolIcon Symbol="Delete" />
+						</Button>
+					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
@@ -409,11 +421,11 @@
 				Grid.Row="0"
 				Grid.Column="2">
 
-		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
-				   MaxWidth="800"
-				   MaxLines="12"
-				   IsTextSelectionEnabled="True"
-				   TextWrapping="WrapWholeWords"/>
+			<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
+					   MaxWidth="800"
+					   MaxLines="12"
+					   IsTextSelectionEnabled="True"
+					   TextWrapping="WrapWholeWords" />
 
 		</Border>
 

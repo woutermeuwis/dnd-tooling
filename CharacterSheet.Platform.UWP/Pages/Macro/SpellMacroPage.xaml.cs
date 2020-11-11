@@ -2,6 +2,7 @@
 using CharacterSheet.Core.ViewModels.Macro;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices;
+using CharacterSheet.Core.Models;
 
 namespace CharacterSheet.Platform.UWP.Pages.Macro
 {
@@ -18,6 +19,13 @@ namespace CharacterSheet.Platform.UWP.Pages.Macro
             ViewModel.Initialize().SafeFireAndForget();
 
             var applicationView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-        }      
+        }
+
+        private void DeleteSpell_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var btn = e.OriginalSource as Button;
+            if (btn?.DataContext is Spell spell)
+                ViewModel.DeleteCommand.Execute(spell);
+        }
     }
 }
