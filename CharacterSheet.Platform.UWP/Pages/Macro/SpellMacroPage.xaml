@@ -83,7 +83,7 @@
 
 		<!-- Spell List -->
 		<ListView Grid.Row="0"
-				  Grid.RowSpan="12"
+				  Grid.RowSpan="11"
 				  ItemsSource="{x:Bind ViewModel.Spells, Mode=OneWay}"
 				  SelectedItem="{x:Bind ViewModel.SelectedSpell, Mode=TwoWay}">
 			<ListView.ItemTemplate>
@@ -305,19 +305,26 @@
 				 Grid.Row="10"
 				 Grid.Column="2" />
 
-		<!-- Generate button -->
-		<Button Content="Generate"
-				Command="{x:Bind ViewModel.GenerateMacroCommand}"
+		<!-- Add Spell button -->
+		<Button Content="Add Spell"
+				Command="{x:Bind ViewModel.AddCommand}"
 				HorizontalAlignment="Left"
 				Width="145"
 				Grid.Row="11"
-				Grid.Column="2" />
-		
+				Grid.Column="0" />
+
 		<!-- Save button -->
-		<Button Content="Save"
+		<Button Content="Save List"
 				Command="{x:Bind ViewModel.SaveCommand}"
 				HorizontalAlignment="Right"
 				Width="145"
+				Grid.Row="11"
+				Grid.Column="0" />
+
+		<!-- Generate button -->
+		<Button Content="Generate"
+				Command="{x:Bind ViewModel.GenerateMacroCommand}"
+				HorizontalAlignment="Stretch"
 				Grid.Row="11"
 				Grid.Column="2" />
 
