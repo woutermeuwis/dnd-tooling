@@ -11,6 +11,7 @@ namespace CharacterSheet.Platform.UWP
         {
             builder.RegisterType<StorageService>().As<IStorageService>();
             builder.RegisterType<FileService>().As<IFileService>();
+            builder.RegisterType<PlatformService>().As<IPlatformService>();
         }
     }
 }

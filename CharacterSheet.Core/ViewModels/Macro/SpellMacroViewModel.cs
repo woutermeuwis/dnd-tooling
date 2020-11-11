@@ -1,6 +1,7 @@
 ﻿using CharacterSheet.Core.Enums;
 using CharacterSheet.Core.Extensions;
 using CharacterSheet.Core.Helpers;
+using CharacterSheet.Core.Interfaces;
 using CharacterSheet.Core.Models;
 using CharacterSheet.Core.Services.Interface;
 using CharacterSheet.Core.ViewModels.Base;
@@ -15,6 +16,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
 	public class SpellMacroViewModel : BaseViewModel
 	{
 		private readonly ISpellMacroService _spellMacroService;
+		private readonly IPlatformService _platformService;
 
 		public ObservableCollection<Spell> Spells { get; }
 		public Spell SelectedSpell { get; set; }
@@ -143,10 +145,12 @@ namespace CharacterSheet.Core.ViewModels.Macro
 		public ICommand ExportCommand { get; }
 		public ICommand ImportCommand { get; }
 		public ICommand DeleteCommand { get; }
+		public ICommand CopyToClipboardCommand { get; }
 
-		public SpellMacroViewModel(ISpellMacroService spellMacroService)
+		public SpellMacroViewModel(ISpellMacroService spellMacroService, IPlatformService platformService)
 		{
 			_spellMacroService = spellMacroService;
+			_platformService = platformService;
 
 			Spells = new ObservableCollection<Spell>();
 			PossibleRanges = new ObservableCollection<SpellRange>();
@@ -159,6 +163,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
 			ExportCommand = new AsyncRelayCommand(ExportSpells);
 			ImportCommand = new AsyncRelayCommand(ImportSpells);
 			DeleteCommand = new AsyncRelayCommand<Spell>(DeleteSpell);
+			CopyToClipboardCommand = new RelayCommand(CopyMacroToClipboard);
 		}
 
 		public override void Prepare()
@@ -222,8 +227,13 @@ namespace CharacterSheet.Core.ViewModels.Macro
 				return;
 
 			Spells.Remove(spell);
-			await SaveList();
 			SelectedSpell = Spells.FirstOrDefault();
+			await SaveList();
+		}
+
+		private void CopyMacroToClipboard()
+		{
+			_platformService.CopyTextToClipboard(Macro);
 		}
 	}
 }
