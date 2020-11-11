@@ -135,10 +135,13 @@ namespace CharacterSheet.Core.ViewModels.Macro
 		public bool ShouldShowCustomFortitudeSave => FortitudeSave == SaveKind.Custom;
 		public bool ShouldShowCustomReflexSave => ReflexSave == SaveKind.Custom;
 		public bool ShouldShowCustomWillSave => WillSave == SaveKind.Custom;
+		public bool ShouldShowMacro => Macro.IsNotNullOrEmptyOrWhitespace();
 
 		public ICommand GenerateMacroCommand { get; }
 		public ICommand SaveCommand { get; }
 		public ICommand AddCommand { get; }
+		public ICommand ExportCommand { get; }
+		public ICommand ImportCommand { get; }
 
 		public SpellMacroViewModel(ISpellMacroService spellMacroService)
 		{
@@ -152,6 +155,8 @@ namespace CharacterSheet.Core.ViewModels.Macro
 			GenerateMacroCommand = new RelayCommand(GenerateMacro);
 			SaveCommand = new AsyncRelayCommand(SaveList);
 			AddCommand = new RelayCommand(AddSpell);
+			ExportCommand = new AsyncRelayCommand(ExportSpells);
+			ImportCommand = new AsyncRelayCommand(ImportSpells);
 		}
 
 		public override void Prepare()
@@ -171,10 +176,7 @@ namespace CharacterSheet.Core.ViewModels.Macro
 		public override async Task Initialize()
 		{
 			await base.Initialize();
-
-			var spells = await _spellMacroService.GetSpells();
-			Spells.Update(spells);
-			SelectedSpell = Spells.FirstOrDefault() ?? new Spell();
+			await ReloadSpells();
 		}
 
 		private void GenerateMacro()
@@ -191,6 +193,25 @@ namespace CharacterSheet.Core.ViewModels.Macro
 		private void AddSpell()
 		{
 			Spells.Add(new Spell() { SpellName = "New Spell" });
+		}
+
+		private async Task ExportSpells()
+		{
+			await SaveList();
+			await _spellMacroService.Export();
+		}
+
+		private async Task ImportSpells()
+		{
+			await _spellMacroService.Import();
+			await ReloadSpells();
+		}
+
+		private async Task ReloadSpells()
+		{
+			var spells = await _spellMacroService.GetSpells();
+			Spells.Update(spells);
+			SelectedSpell = Spells.FirstOrDefault() ?? new Spell();
 		}
 	}
 }

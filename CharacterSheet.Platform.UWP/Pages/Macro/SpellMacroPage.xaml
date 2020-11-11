@@ -7,83 +7,40 @@
 	  mc:Ignorable="d"
 	  Background="{ThemeResource DefaultBackgroundColor}">
 
-	<Page.Resources>
-		<ResourceDictionary>
+	<Grid	HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			RowSpacing="10"
+			ColumnSpacing="10"
+			Margin="10">
 
-			<GridLength x:Key="DefaultRowHeight">50</GridLength>
-
-			<Style TargetType="TextBlock">
-				<Setter Property="HorizontalAlignment"
-						Value="Left" />
-				<Setter Property="VerticalAlignment"
-						Value="Center" />
-			</Style>
-
-			<Style TargetType="TextBox">
-				<Setter Property="HorizontalAlignment"
-						Value="Left" />
-				<Setter Property="VerticalAlignment"
-						Value="Center" />
-				<Setter Property="Width"
-						Value="300" />
-			</Style>
-
-			<Style TargetType="ComboBox">
-				<Setter Property="HorizontalAlignment"
-						Value="Left" />
-				<Setter Property="VerticalAlignment"
-						Value="Center" />
-			</Style>
-
-		</ResourceDictionary>
-	</Page.Resources>
-
-	<Grid Padding="20"
-		  ColumnSpacing="20">
-
-		<Grid.ColumnDefinitions>
-			<!-- Spell List -->
-			<ColumnDefinition Width="300" />
-			<!-- Labels -->
-			<ColumnDefinition Width="100" />
-			<!-- Input -->
-			<ColumnDefinition Width="300" />
-			<!-- Separator -->
-			<ColumnDefinition Width="5" />
-			<!-- Result -->
-			<ColumnDefinition Width="400" />
-		</Grid.ColumnDefinitions>
+		<Grid.Resources>
+			<ResourceDictionary>
+				<Style TargetType="Button">
+					<Setter Property="HorizontalAlignment"
+							Value="Stretch" />
+					<Setter Property="VerticalAlignment"
+							Value="Stretch" />
+				</Style>
+			</ResourceDictionary>
+		</Grid.Resources>
 
 		<Grid.RowDefinitions>
-			<!-- Name -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- School -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Components -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Casting Time -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Range -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Target -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Area -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Duration -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Saving throw -->
-			<RowDefinition Height="150" />
-			<!-- Spell Resistance-->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			<!-- Notes -->
-			<RowDefinition Height="200" />
-			<!-- Generate button -->
-			<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="35" />
+			<RowDefinition Height="35" />
 		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="300" />
+			<ColumnDefinition Width="450" />
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<!--#region Spell List -->
 
 		<!-- Spell List -->
 		<ListView Grid.Row="0"
-				  Grid.RowSpan="11"
+				  Grid.Column="0"
 				  ItemsSource="{x:Bind ViewModel.Spells, Mode=OneWay}"
 				  SelectedItem="{x:Bind ViewModel.SelectedSpell, Mode=TwoWay}">
 			<ListView.ItemTemplate>
@@ -92,225 +49,14 @@
 							   HorizontalAlignment="Stretch" />
 				</DataTemplate>
 			</ListView.ItemTemplate>
-
 		</ListView>
-
-		<!-- Spell Name -->
-		<TextBlock Text="Spell Name"
-				   Grid.Row="0"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Spell Name"
-				 Text="{x:Bind ViewModel.SpellName, Mode=TwoWay}"
-				 Grid.Row="0"
-				 Grid.Column="2" />
-
-		<!-- School -->
-		<TextBlock Text="School"
-				   Grid.Row="1"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="School"
-				 Text="{x:Bind ViewModel.School, Mode=TwoWay}"
-				 Grid.Row="1"
-				 Grid.Column="2" />
-
-		<!-- Components -->
-		<TextBlock Text="Components"
-				   Grid.Row="2"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Components"
-				 Text="{x:Bind ViewModel.Components, Mode=TwoWay}"
-				 Grid.Row="2"
-				 Grid.Column="2" />
-
-		<!-- Casting Time-->
-		<TextBlock Text="Casting Time"
-				   Grid.Row="3"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Casting Time"
-				 Text="{x:Bind ViewModel.CastingTime, Mode=TwoWay}"
-				 Grid.Row="3"
-				 Grid.Column="2" />
-
-		<!-- Range -->
-		<TextBlock Text="Range"
-				   Grid.Row="4"
-				   Grid.Column="1" />
-
-		<StackPanel Orientation="Horizontal"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Center"
-					Spacing="10"
-					Grid.Row="4"
-					Grid.Column="2">
-
-			<ComboBox x:Name="RangePicker"
-					  PlaceholderText="Select a Range"
-					  ItemsSource="{x:Bind ViewModel.PossibleRanges, Mode=OneWay}"
-					  SelectedItem="{x:Bind ViewModel.Range, Mode=TwoWay}"
-					  Width="150" />
-
-			<TextBox PlaceholderText="Custom Range"
-					 Text="{x:Bind ViewModel.CustomRange, Mode=TwoWay}"
-					 Visibility="{x:Bind ViewModel.ShouldShowCustomRange, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="140" />
-
-		</StackPanel>
-
-		<!-- Target -->
-		<TextBlock Text="Target"
-				   Grid.Row="5"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Target"
-				 Text="{x:Bind ViewModel.Target, Mode=TwoWay}"
-				 Grid.Row="5"
-				 Grid.Column="2" />
-
-		<!-- Area -->
-		<TextBlock Text="Area"
-				   Grid.Row="6"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Area"
-				 Text="{x:Bind ViewModel.Area, Mode=TwoWay}"
-				 Grid.Row="6"
-				 Grid.Column="2" />
-
-		<!-- Duration-->
-		<TextBlock Text="Duration"
-				   Grid.Row="7"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Duration"
-				 Text="{x:Bind ViewModel.Duration, Mode=TwoWay}"
-				 Grid.Row="7"
-				 Grid.Column="2" />
-
-		<!-- Saving Throw -->
-		<TextBlock Text="Saving Throw"
-				   VerticalAlignment="Top"
-				   Margin="0,15"
-				   Grid.Row="8"
-				   Grid.Column="1" />
-
-		<Grid Grid.Row="8"
-			  Grid.Column="2"
-			  HorizontalAlignment="Left"
-			  VerticalAlignment="Center"
-			  ColumnSpacing="10">
-
-			<Grid.RowDefinitions>
-				<!-- Fortitude -->
-				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-				<!-- Reflex -->
-				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-				<!-- Will -->
-				<RowDefinition Height="{StaticResource DefaultRowHeight}" />
-			</Grid.RowDefinitions>
-
-			<Grid.ColumnDefinitions>
-				<!-- type -->
-				<ColumnDefinition Width="30" />
-				<!-- kind -->
-				<ColumnDefinition Width="100" />
-				<!-- include -->
-				<ColumnDefinition Width="150" />
-
-			</Grid.ColumnDefinitions>
-
-			<TextBlock Text="Fort"
-					   Grid.Row="0"
-					   Grid.Column="0" />
-
-			<ComboBox Grid.Row="0"
-					  Grid.Column="1"
-					  HorizontalAlignment="Stretch"
-					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
-					  SelectedItem="{x:Bind ViewModel.FortitudeSave, Mode=TwoWay}" />
-
-			<TextBox PlaceholderText="Custom"
-					 Text="{x:Bind ViewModel.CustomFortitudeSave, Mode=TwoWay}"
-					 Visibility="{x:Bind ViewModel.ShouldShowCustomFortitudeSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="150"
-					 Grid.Row="0"
-					 Grid.Column="2" />
-
-			<TextBlock Text="Refl"
-					   Grid.Row="1"
-					   Grid.Column="0" />
-
-			<ComboBox Grid.Row="1"
-					  Grid.Column="1"
-					  HorizontalAlignment="Stretch"
-					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
-					  SelectedItem="{x:Bind ViewModel.ReflexSave, Mode=TwoWay}" />
-
-			<TextBox PlaceholderText="Custom"
-					 Text="{x:Bind ViewModel.CustomReflexSave, Mode=TwoWay}"
-					 Visibility="{x:Bind ViewModel.ShouldShowCustomReflexSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="150"
-					 Grid.Row="1"
-					 Grid.Column="2" />
-
-			<TextBlock Text="Will"
-					   Grid.Row="2"
-					   Grid.Column="0" />
-
-			<ComboBox Grid.Row="2"
-					  Grid.Column="1"
-					  HorizontalAlignment="Stretch"
-					  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
-					  SelectedItem="{x:Bind ViewModel.WillSave, Mode=TwoWay}" />
-
-			<TextBox PlaceholderText="Custom"
-					 Text="{x:Bind ViewModel.CustomWillSave, Mode=TwoWay}"
-					 Visibility="{x:Bind ViewModel.ShouldShowCustomWillSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Width="150"
-					 Grid.Row="2"
-					 Grid.Column="2" />
-
-		</Grid>
-
-		<!-- Spell Resistance -->
-		<TextBlock Text="Spell Resistance"
-				   Grid.Row="9"
-				   Grid.Column="1" />
-
-		<ComboBox Grid.Row="9"
-				  Grid.Column="2"
-				  Width="300"
-				  ItemsSource="{x:Bind ViewModel.PossibleResistances, Mode=OneWay}"
-				  SelectedItem="{x:Bind ViewModel.SpellResistance, Mode=TwoWay}" />
-
-		<!-- Notes -->
-		<TextBlock Text="Notes"
-				   VerticalAlignment="Top"
-				   Margin="0,15,0,0"
-				   Grid.Row="10"
-				   Grid.Column="1" />
-
-		<TextBox PlaceholderText="Notes"
-				 Text="{x:Bind ViewModel.Notes, Mode=TwoWay}"
-				 AcceptsReturn="True"
-				 TextWrapping="Wrap"
-				 ScrollViewer.VerticalScrollBarVisibility="Auto"
-				 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-				 MaxWidth="300"
-				 VerticalAlignment="Stretch"
-				 Margin="0,15"
-				 Grid.Row="10"
-				 Grid.Column="2" />
 
 		<!-- Add Spell button -->
 		<Button Content="Add Spell"
 				Command="{x:Bind ViewModel.AddCommand}"
 				HorizontalAlignment="Left"
 				Width="145"
-				Grid.Row="11"
+				Grid.Row="1"
 				Grid.Column="0" />
 
 		<!-- Save button -->
@@ -318,31 +64,361 @@
 				Command="{x:Bind ViewModel.SaveCommand}"
 				HorizontalAlignment="Right"
 				Width="145"
-				Grid.Row="11"
+				Grid.Row="1"
 				Grid.Column="0" />
 
-		<!-- Generate button -->
+		<!-- Export button -->
+		<Button Content="Export Spells"
+				Command="{x:Bind ViewModel.ExportCommand}"
+				HorizontalAlignment="Left"
+				Width="145"
+				Grid.Row="2"
+				Grid.Column="0" />
+
+		<!-- Import button -->
+		<Button Content="Import spells"
+				Command="{x:Bind ViewModel.ImportCommand}"
+				HorizontalAlignment="Right"
+				Width="145"
+				Grid.Row="2"
+				Grid.Column="0" />
+
+		<!--#endregion-->
+
+		<!--#region Input-->
+
+		<!-- Input ScrollView -->
+		<ScrollViewer Grid.Row="0"
+					  Grid.Column="1">
+
+			<Grid>
+
+				<Grid.Resources>
+
+					<GridLength x:Key="DefaultRowHeight">50</GridLength>
+
+					<Style TargetType="TextBlock">
+						<Setter Property="HorizontalAlignment"
+								Value="Left" />
+						<Setter Property="VerticalAlignment"
+								Value="Center" />
+					</Style>
+
+					<Style TargetType="TextBox">
+						<Setter Property="HorizontalAlignment"
+								Value="Left" />
+						<Setter Property="VerticalAlignment"
+								Value="Center" />
+						<Setter Property="Width"
+								Value="300" />
+					</Style>
+
+					<Style TargetType="ComboBox">
+						<Setter Property="HorizontalAlignment"
+								Value="Left" />
+						<Setter Property="VerticalAlignment"
+								Value="Center" />
+					</Style>
+
+				</Grid.Resources>
+
+				<Grid.RowDefinitions>
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="150" />
+					<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					<RowDefinition Height="200" />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="300" />
+				</Grid.ColumnDefinitions>
+
+				<!--#region Spell Name -->
+
+				<TextBlock Text="Spell Name"
+						   Grid.Row="0"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Spell Name"
+						 Text="{x:Bind ViewModel.SpellName, Mode=TwoWay}"
+						 Grid.Row="0"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region School -->
+
+				<TextBlock Text="School"
+						   Grid.Row="1"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="School"
+						 Text="{x:Bind ViewModel.School, Mode=TwoWay}"
+						 Grid.Row="1"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Components -->
+
+				<TextBlock Text="Components"
+						   Grid.Row="2"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Components"
+						 Text="{x:Bind ViewModel.Components, Mode=TwoWay}"
+						 Grid.Row="2"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Casting Time -->
+
+				<TextBlock Text="Casting Time"
+						   Grid.Row="3"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Casting Time"
+						 Text="{x:Bind ViewModel.CastingTime, Mode=TwoWay}"
+						 Grid.Row="3"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Range -->
+
+				<TextBlock Text="Range"
+						   Grid.Row="4"
+						   Grid.Column="0" />
+
+				<StackPanel Orientation="Horizontal"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Spacing="10"
+							Grid.Row="4"
+							Grid.Column="1">
+
+					<ComboBox x:Name="RangePicker"
+							  PlaceholderText="Select a Range"
+							  ItemsSource="{x:Bind ViewModel.PossibleRanges, Mode=OneWay}"
+							  SelectedItem="{x:Bind ViewModel.Range, Mode=TwoWay}"
+							  Width="150" />
+
+					<TextBox PlaceholderText="Custom Range"
+							 Text="{x:Bind ViewModel.CustomRange, Mode=TwoWay}"
+							 Visibility="{x:Bind ViewModel.ShouldShowCustomRange, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+							 Width="140" />
+
+				</StackPanel>
+
+				<!--#endregion-->
+
+				<!--#region Target -->
+
+				<TextBlock Text="Target"
+						   Grid.Row="5"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Target"
+						 Text="{x:Bind ViewModel.Target, Mode=TwoWay}"
+						 Grid.Row="5"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Area -->
+
+				<TextBlock Text="Area"
+						   Grid.Row="6"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Area"
+						 Text="{x:Bind ViewModel.Area, Mode=TwoWay}"
+						 Grid.Row="6"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Duration -->
+
+				<TextBlock Text="Duration"
+						   Grid.Row="7"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Duration"
+						 Text="{x:Bind ViewModel.Duration, Mode=TwoWay}"
+						 Grid.Row="7"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+				<!--#region Saving Throw -->
+
+				<TextBlock Text="Saving Throw"
+						   VerticalAlignment="Top"
+						   Margin="0,15"
+						   Grid.Row="8"
+						   Grid.Column="0" />
+
+				<Grid Grid.Row="8"
+					  Grid.Column="1"
+					  HorizontalAlignment="Left"
+					  VerticalAlignment="Center"
+					  ColumnSpacing="10">
+
+					<Grid.RowDefinitions>
+						<!-- Fortitude -->
+						<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+						<!-- Reflex -->
+						<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+						<!-- Will -->
+						<RowDefinition Height="{StaticResource DefaultRowHeight}" />
+					</Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<!-- type -->
+						<ColumnDefinition Width="30" />
+						<!-- kind -->
+						<ColumnDefinition Width="100" />
+						<!-- include -->
+						<ColumnDefinition Width="150" />
+
+					</Grid.ColumnDefinitions>
+
+					<TextBlock Text="Fort"
+							   Grid.Row="0"
+							   Grid.Column="0" />
+
+					<ComboBox Grid.Row="0"
+							  Grid.Column="1"
+							  HorizontalAlignment="Stretch"
+							  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+							  SelectedItem="{x:Bind ViewModel.FortitudeSave, Mode=TwoWay}" />
+
+					<TextBox PlaceholderText="Custom"
+							 Text="{x:Bind ViewModel.CustomFortitudeSave, Mode=TwoWay}"
+							 Visibility="{x:Bind ViewModel.ShouldShowCustomFortitudeSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+							 Width="150"
+							 Grid.Row="0"
+							 Grid.Column="2" />
+
+					<TextBlock Text="Refl"
+							   Grid.Row="1"
+							   Grid.Column="0" />
+
+					<ComboBox Grid.Row="1"
+							  Grid.Column="1"
+							  HorizontalAlignment="Stretch"
+							  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+							  SelectedItem="{x:Bind ViewModel.ReflexSave, Mode=TwoWay}" />
+
+					<TextBox PlaceholderText="Custom"
+							 Text="{x:Bind ViewModel.CustomReflexSave, Mode=TwoWay}"
+							 Visibility="{x:Bind ViewModel.ShouldShowCustomReflexSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+							 Width="150"
+							 Grid.Row="1"
+							 Grid.Column="2" />
+
+					<TextBlock Text="Will"
+							   Grid.Row="2"
+							   Grid.Column="0" />
+
+					<ComboBox Grid.Row="2"
+							  Grid.Column="1"
+							  HorizontalAlignment="Stretch"
+							  ItemsSource="{x:Bind ViewModel.PossibleSaveKinds, Mode=OneWay}"
+							  SelectedItem="{x:Bind ViewModel.WillSave, Mode=TwoWay}" />
+
+					<TextBox PlaceholderText="Custom"
+							 Text="{x:Bind ViewModel.CustomWillSave, Mode=TwoWay}"
+							 Visibility="{x:Bind ViewModel.ShouldShowCustomWillSave, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+							 Width="150"
+							 Grid.Row="2"
+							 Grid.Column="2" />
+
+				</Grid>
+
+				<!--#endregion-->
+
+				<!--#region Spell Resistance -->
+
+				<TextBlock Text="Spell Resistance"
+						   Grid.Row="9"
+						   Grid.Column="0" />
+
+				<ComboBox Grid.Row="9"
+						  Grid.Column="1"
+						  Width="300"
+						  ItemsSource="{x:Bind ViewModel.PossibleResistances, Mode=OneWay}"
+						  SelectedItem="{x:Bind ViewModel.SpellResistance, Mode=TwoWay}" />
+
+				<!--#endregion-->
+
+				<!--#region Notes -->
+
+				<TextBlock Text="Notes"
+						   VerticalAlignment="Top"
+						   Margin="0,15,0,0"
+						   Grid.Row="10"
+						   Grid.Column="0" />
+
+				<TextBox PlaceholderText="Notes"
+						 Text="{x:Bind ViewModel.Notes, Mode=TwoWay}"
+						 AcceptsReturn="True"
+						 TextWrapping="Wrap"
+						 ScrollViewer.VerticalScrollBarVisibility="Auto"
+						 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+						 MaxWidth="300"
+						 VerticalAlignment="Stretch"
+						 Margin="0,15"
+						 Grid.Row="10"
+						 Grid.Column="1" />
+
+				<!--#endregion-->
+
+			</Grid>
+
+		</ScrollViewer>
+
+		<!-- Generate Macro Button -->
 		<Button Content="Generate"
 				Command="{x:Bind ViewModel.GenerateMacroCommand}"
 				HorizontalAlignment="Stretch"
-				Grid.Row="11"
-				Grid.Column="2" />
+				VerticalAlignment="Stretch"
+				Grid.Row="1"
+				Grid.Column="1" />
 
-		<!-- Separator -->
-		<Border Background="DarkGray"
+		<!--#endregion-->
+
+		<!--#region Output -->
+
+		<Border HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				BorderBrush="Gray"
+				BorderThickness="2"
+				Padding="10,5"
+				Visibility="{x:Bind ViewModel.ShouldShowMacro, Mode=OneWay}"
 				Grid.Row="0"
-				Grid.RowSpan="12"
-				Grid.Column="3" />
+				Grid.Column="2">
 
-		<!-- Macro -->
 		<TextBlock Text="{x:Bind ViewModel.Macro, Mode=OneWay}"
 				   MaxWidth="800"
 				   MaxLines="12"
 				   IsTextSelectionEnabled="True"
-				   TextWrapping="WrapWholeWords"
-				   Grid.Row="0"
-				   Grid.RowSpan="12"
-				   Grid.Column="4" />
+				   TextWrapping="WrapWholeWords"/>
+
+		</Border>
+
+		<!--#endregion-->
 
 	</Grid>
+
 </Page>

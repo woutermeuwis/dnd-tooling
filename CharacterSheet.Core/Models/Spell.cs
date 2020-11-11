@@ -29,7 +29,7 @@ namespace CharacterSheet.Core.Models
 
         public Spell()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
 
         [JsonConstructor]

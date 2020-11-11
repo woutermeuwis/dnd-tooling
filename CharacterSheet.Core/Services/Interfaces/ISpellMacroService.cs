@@ -9,6 +9,8 @@ namespace CharacterSheet.Core.Services.Interface
         Task Initialize();
         Task<List<Spell>> GetSpells();
         Task SaveSpells(IEnumerable <Spell> spells);
+        Task Export();
+        Task Import();
         string GenerateMacroFromSpell(Spell spell);
     }
 }

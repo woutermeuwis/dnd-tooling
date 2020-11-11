@@ -12,14 +12,17 @@ namespace CharacterSheet.Core.Services
 {
 	public class SpellMacroService : ISpellMacroService
 	{
-		private readonly IStorageService _storage;
+		private readonly IStorageService _storageService;
+		private readonly IFileService _fileService;
 
 		private readonly List<Spell> _spells;
 		private bool _initialized;
 
-		public SpellMacroService(IStorageService storageService)
+		public SpellMacroService(IStorageService storageService, IFileService fileService)
 		{
-			_storage = storageService;
+			_storageService = storageService;
+			_fileService = fileService;
+
 			_spells = new List<Spell>();
 		}
 
@@ -44,6 +47,22 @@ namespace CharacterSheet.Core.Services
 		{
 			_spells.Update(spells);
 			await Save().ConfigureAwait(false);
+		}
+
+		public async Task Export()
+		{
+			var json = Newtonsoft.Json.JsonConvert.SerializeObject(_spells);
+			await _fileService.SaveTextToFile(json, "spells");
+		}
+
+		public async Task Import()
+		{
+			var spellsJson = await _fileService.ReadTextFromFile();
+			if (spellsJson.IsNotNullOrEmptyOrWhitespace())
+			{
+				var spells = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Spell>>(spellsJson);
+				_spells.Update(spells);
+			}
 		}
 
 		public string GenerateMacroFromSpell(Spell spell)
@@ -160,12 +179,11 @@ namespace CharacterSheet.Core.Services
 			return sb.ToString();
 		}
 
-
 		#region private helpers
 
 		private async Task Load()
 		{
-			var spellsJson = await _storage.Fetchdata(Constants.Files.Spells).ConfigureAwait(false);
+			var spellsJson = await _storageService.Fetchdata(Constants.Files.Spells).ConfigureAwait(false);
 			if (spellsJson.IsNotNullOrEmptyOrWhitespace())
 			{
 				var spells = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Spell>>(spellsJson);
@@ -176,7 +194,7 @@ namespace CharacterSheet.Core.Services
 		private async Task Save()
 		{
 			var json = Newtonsoft.Json.JsonConvert.SerializeObject(_spells);
-			await _storage.StoreData(Constants.Files.Spells, json);
+			await _storageService.StoreData(Constants.Files.Spells, json);
 		}
 
 		private string WrapTag(string name, string value) => $" {{{{{name}={value}}}}}";

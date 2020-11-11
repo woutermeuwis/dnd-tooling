@@ -10,6 +10,7 @@ namespace CharacterSheet.Platform.UWP
         protected override void RegisterPlatformTypes(ContainerBuilder builder)
         {
             builder.RegisterType<StorageService>().As<IStorageService>();
+            builder.RegisterType<FileService>().As<IFileService>();
         }
     }
 }
